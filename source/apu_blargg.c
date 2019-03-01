@@ -2934,6 +2934,9 @@ static void resampler_time_ratio(double ratio)
 
 static void resampler_read(int16_t *data, int32_t num_samples)
 {
+   int32_t i_position, o_position, consumed;
+   int16_t *internal_buffer;
+
 	if (r_step == 65536)
 	{
 		//direct copy if we are not resampling
@@ -2961,9 +2964,6 @@ static void resampler_read(int16_t *data, int32_t num_samples)
 		}
 		return;
 	}
-
-   int32_t i_position, o_position, consumed;
-   int16_t *internal_buffer;
 
    i_position = rb_start >> 1;
    internal_buffer = (int16_t *)rb_buffer;
@@ -3296,8 +3296,7 @@ bool S9xInitAPU()
    /* unpack cycle table */
    for ( i = 0; i < 128; i++ )
    {
-      int32_t n;
-      n = cycle_table [i];
+      int32_t n = cycle_table [i];
       m.cycle_table [i * 2 + 0] = n >> 4;
       m.cycle_table [i * 2 + 1] = n & 0x0F;
    }
